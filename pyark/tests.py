@@ -34,6 +34,9 @@ class TestPyArk (TestCase):
         if not cls.CVA_URL_BASE or not cls.GEL_USER:
             logging.error("Please set the configuration environment variables: CVA_URL, GEL_USER, GEL_PASSWORD")
             raise ValueError("Missing config")
+        if 'prod' in cls.CVA_URL_BASE:
+            logging.error("Test cannot be run against prod because they actually add test data to CVA")
+            raise ValueError("Cannot run tests against prod")
         logging.info("Running tests against {}".format(cls.CVA_URL_BASE))
         cls.cva = CvaClient(cls.CVA_URL_BASE, user=cls.GEL_USER, password=cls.GEL_PASSWORD, retries=10)
         cls.report_events = cls.cva.report_events()
